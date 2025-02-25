@@ -12,18 +12,62 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            overflow: hidden;
         }
         canvas {
             background-color: #000;
-             width: 100%;
+            width: 100%;
             height: auto;
             max-width: 400px;
             max-height: 400px;
         }
+        #fullscreenButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
+    <button id="fullscreenButton">Go Fullscreen</button>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <script src="snake.js"></script>
+    <script src="snake.js">
+        document.addEventListener('touchmove', function(event) {
+            event.preventDefault();
+        }, { passive: false });
+
+
+        // Fullscreen 
+        const fullscreenButton = document.getElementById('fullscreenButton');
+        fullscreenButton.addEventListener('click', function() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        });
+
+        // Hide fullscreen button 
+        document.addEventListener('fullscreenchange', function() {
+            if (document.fullscreenElement) {
+                fullscreenButton.style.display = 'none';
+            } else {
+                fullscreenButton.style.display = 'block';
+            }
+        });
+    </script>
+
+    
 </body>
 </html>

@@ -32,8 +32,20 @@ function resetGame() {
     snake.dy = 0;
     score = 0;
 
-    apple.x = getRandomInt(0, 25) * grid;
-    apple.y = getRandomInt(0, 25) * grid;
+    placeApple();
+}
+
+function placeApple() {
+    let newApplePosition;
+    do {
+        newApplePosition = {
+            x: getRandomInt(0, canvas.width / grid) * grid,
+            y: getRandomInt(0, canvas.height / grid) * grid
+        };
+    } while (snake.cells.some(cell => cell.x === newApplePosition.x && cell.y === newApplePosition.y));
+
+    apple.x = newApplePosition.x;
+    apple.y = newApplePosition.y;
 }
 
 function loop() {
@@ -70,8 +82,7 @@ function loop() {
         if (cell.x === apple.x && cell.y === apple.y) {
             snake.maxCells++;
             score++;
-            apple.x = getRandomInt(0, 25) * grid;
-            apple.y = getRandomInt(0, 25) * grid;
+            placeApple();
         }
 
         for (let i = index + 1; i < snake.cells.length; i++) {
@@ -149,4 +160,5 @@ function handleTouchMove(evt) {
     yDown = null;
 }
 
+resetGame();
 requestAnimationFrame(loop);
